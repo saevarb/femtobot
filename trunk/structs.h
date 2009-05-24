@@ -1,7 +1,7 @@
-
 #ifndef __STRUCTS_H_
 #define __STRUCTS_H_
 
+/* Unfinished */
 typedef struct _thread_data
 {
 	unsigned char *write_buffer;
@@ -15,7 +15,7 @@ typedef struct _channel
 {
 	char *channelname;
 	char *password;
-	/* Used for leaving and join channels */
+	/* Used for leaving and joining channels */
 	unsigned short int joined;
 } channel;
 
@@ -31,6 +31,7 @@ typedef struct _serverinfo
 typedef struct _botinfo
 {
 	char **nicks;
+	int nick_count;
 	unsigned int server_count;
 	serverinfo *servers;
 } botinfo;

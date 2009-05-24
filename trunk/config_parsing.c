@@ -3,54 +3,48 @@
 int get_settings(char *filename)
 {
 	FILE *in;
-	unsigned int count = 0, buffer_size = BUFFER_INCREMENTS;
-	char *buffer, one;
+	unsigned int read_count = 0, buffer_size = BUFFER_INCREMENTS;
+	char *buffer = NULL, one;
 		
-	in = fopen(filename, "rt");
+	in = fopen(filename, "r");
 	if(in == NULL)
 	{
-		fprintf(stderr, "Error: failed to open config file `%s`.", filename);
-		return -1;
+		return ERR_CHECK_ERRNO;
 	}
 	
-	buffer = calloc(BUFFER_INCREMENTS, sizeof(char));
+	buffer = calloc(BUFFER_INCREMENTS, 1);
 	if(buffer == NULL)
 	{
-		fprintf(stderr, "Error: Memory allocation failed.");
-		exit(1);
+		return ERR_CHECK_ERRNO;
 	}
 	
-	while((one = getc(in)) != EOF)
+	while((one = getc(in)) != EOF && !feof(in))
 	{
 		if(one == EOL)
 		{
-			buffer[count + 1] = '\0';
-			printf("buffer: %s\n", buffer);
+			buffer[read_count ] = '\0';
+			printf("%s\n", buffer);
 			
-			free(buffer);
-			count = 0;
+			read_count = 0;
 			buffer_size = BUFFER_INCREMENTS;
-			buffer = calloc(BUFFER_INCREMENTS, sizeof(char));
+			buffer = calloc(BUFFER_INCREMENTS, 1);
 			if(buffer == NULL)
 			{
-				fprintf(stderr, "Error: Memory allocation failed.");
-				exit(1);
+				return ERR_CHECK_ERRNO;
 			}
 			continue;
 		}
-		
-		if(count >= (buffer_size - 2))
+		if(read_count >= (buffer_size - 2))
 		{
 			buffer_size += BUFFER_INCREMENTS;
 			buffer = realloc(buffer, buffer_size);
 			if(buffer == NULL)
 			{
-				fprintf(stderr, "Error: Memory allocation failed.");
-				exit(1);
+				return ERR_CHECK_ERRNO;
 			}
 		}
-		buffer[count] = one;
-		count++;
+		buffer[read_count] = one;
+		read_count++;
 	}
 	free(buffer);
 	return 0;
