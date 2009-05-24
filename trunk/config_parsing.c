@@ -25,6 +25,8 @@ int get_settings(char *filename)
 		if(one == EOL)
 		{
 			buffer[count + 1] = '\0';
+			printf("buffer: %s\n", buffer);
+			
 			free(buffer);
 			count = 0;
 			buffer_size = BUFFER_INCREMENTS;
@@ -34,6 +36,7 @@ int get_settings(char *filename)
 				fprintf(stderr, "Error: Memory allocation failed.");
 				exit(1);
 			}
+			continue;
 		}
 		
 		if(count >= (buffer_size - 2))
@@ -47,10 +50,8 @@ int get_settings(char *filename)
 			}
 		}
 		buffer[count] = one;
-		printf("%02x = %02x (%u)\n", one, buffer[count], count);
 		count++;
-		buffer[count] = 0;
-		printf("buffer: %s\n", buffer);
 	}
+	free(buffer);
 	return 0;
 }
