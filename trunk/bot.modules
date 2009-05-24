@@ -1,0 +1,7 @@
+[module 3 ./libmodule.so]
+event=PRIVMSG
+functions=privmsg_handler
+event=NOTICE
+functions=notice_handler
+event=PING
+functions=ping_handler
