@@ -10,8 +10,8 @@ Subjects to be discussed:
   * Requirements
   * The general model and design
   * Module support
-  * Inter-thread communication
-  * Miscellaneous
+  * Inter-thread communication *TODO: More here? *
+  * Miscellaneous *TODO*
   * main()'s functionality and purpose *TODO*
   * The receiver thread's functionality and purpose *TODO*
   * The sender thread's functionality and purpose *TODO*
@@ -63,4 +63,6 @@ The same applies to the two following lines that define a NOTICE handler.
 You can have different modules with different handlers for the same events. You could create another module, add it to the the list and specify PRIVMSG handlers that are in it as well - they will simply be added to the PRIVMSG event chain.
 
 == Inter-thread communication ==
-The original intent is to use pipes to make threads communicate 
+The original intent is to use pipes to make threads communicate, unless a better option is available. We are somewhat new to this, so if someone comes along and tells us something else is better(And explains why, of course), we will most likely use that
+
+*TODO: More here?*
