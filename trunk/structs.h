@@ -1,5 +1,5 @@
 
-#ifdef __STRUCTS_H_
+#ifndef __STRUCTS_H_
 #define __STRUCTS_H_
 
 typedef struct _thread_data
@@ -10,11 +10,11 @@ typedef struct _thread_data
 	pthread_cond_t  *quit_event;
 } thread_data;
 
-typedef struct _botinfo
+typedef struct _channel
 {
-	unsigned int server_count;
-	serverinfo *servers;
-}botinfo;
+	char *channelname;
+	char *password;
+} channel;
 
 typedef struct _serverinfo
 {
@@ -22,12 +22,12 @@ typedef struct _serverinfo
 	char *host;
 	unsigned short int port;
 	channel *channels;
-}serverinfo;
+} serverinfo;
 
-typedef struct _channel
+typedef struct _botinfo
 {
-	char *channelname;
-	char *password;
-}channel;
+	unsigned int server_count;
+	serverinfo *servers;
+} botinfo;
 
 #endif
