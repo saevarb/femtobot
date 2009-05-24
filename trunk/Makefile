@@ -13,6 +13,14 @@
 	
 ../bin/:
 	mkdir ../bin
+	cp bot.conf ../bin/
+	cp bot.modules ../bin/
 
+libmodule:	../obj/libmodule.o ../bin/
+	gcc -shared -o ../bin/libmodule.so ../obj/libmodule.o
+	
+../obj/libmodule.o:
+	gcc -fPIC -c module.c -o ../obj/libmodule.o
+	
 clean:
 	rm -rf ../obj/*.o
