@@ -1,7 +1,11 @@
-#include <stdio.h>
-
+#include "main.h"
 
 int main(void)
 {
-	int i = 10;
+	
+	int ret = get_settings("bot.conf");
+	
+	printf("ret: %d\n", ret);
+	
+	return 0;
 }
