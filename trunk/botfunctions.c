@@ -69,6 +69,13 @@ int load_modules(irc *ircbot)
 			ircbot->modules[ircbot->module_count].handle = dlopen(module_name, RTLD_LAZY);
 			ircbot->modules[ircbot->module_count].func_count = 0;
 			ircbot->modules[ircbot->module_count].funcs = NULL;
+		
+			if(!ircbot->modules[ircbot->module_count].handle)
+			{
+				printf("could not load module.: %s\n", dlerror());
+				exit(1);
+			}
+			
 			for(; count > 0; count--)
 			{
 				fscanf(in, "event=%[^\n]\n", cur_event_name);
