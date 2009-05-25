@@ -20,20 +20,29 @@ typedef struct _channel
 } channel;
 
 /* Contains info about a server */
-typedef struct _serverinfo
+typedef struct _server_info
 {
 	char *host;
 	unsigned short int port;
 	channel *channels;
-} serverinfo;
+} server_info;
+
+/* Contains all config values from the config file */
+typedef struct _bot_config
+{
+	char *setting;
+	char *value;
+}bot_config;
 
 /* Contains the info about the bot */
-typedef struct _botinfo
+typedef struct _bot_info
 {
 	char **nicks;
 	int nick_count;
 	unsigned int server_count;
-	serverinfo *servers;
-} botinfo;
+	server_info *servers;
+	bot_config *b_config;
+	unsigned int config_count;
+} bot_info;
 
 #endif
