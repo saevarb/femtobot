@@ -5,5 +5,6 @@
 #include <stdlib.h>
 #include "prototypes.h"
 #include "structs.h"
+#include "errors.h"
 
 #endif
