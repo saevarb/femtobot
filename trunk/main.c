@@ -17,7 +17,7 @@ int main(void)
 	b_info.b_config = NULL;
 	b_info.config_count = 0;
 	
-	int ret = get_settings("bot.conf", &b_info);
+	int ret = parse_file("bot.conf", &b_info);
 	
 	if((setting_ptr = get_setting("NICKS", &b_info)) == NULL)
 	{
