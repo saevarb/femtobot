@@ -130,7 +130,7 @@ int parse_line(char *buffer, bot_info *b_info)
 	return 0;
 }
 
-int parse_file(const char *filename, bot_info *b_info)
+int read_settings(const char *filename, bot_info *b_info)
 {
 	FILE *in;
 	unsigned int read_count = 0, buffer_size = BUFFER_INCREMENTS,

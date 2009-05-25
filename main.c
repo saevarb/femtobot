@@ -4,7 +4,7 @@ int main(void)
 {
 	bot_info b_info;
 	bot_config *setting_ptr;
-	int i;
+	int i, ret;
 	
 	/* Mandatory intialization. Failure to do this
 	 * may result in havoc later on. Especially
@@ -17,16 +17,27 @@ int main(void)
 	b_info.b_config = NULL;
 	b_info.config_count = 0;
 	
-	int ret = parse_file("bot.conf", &b_info);
+	if( (ret = read_settings("bot.conf", &b_info)) != 0)
+	{
+		_error(ret);
+		/* Do cleanup here */
+	}
+	
 	
 	if((setting_ptr = get_setting("NICKS", &b_info)) == NULL)
 	{
-		printf("ERROR: No nicknames defined in the config file.\n");
+		_error(ERR_SETTING_MISSING);
+		/* Do cleanup here */
 		return 0;
 	}
 	
 	/* Todo: Error handling */
-	parse_nicks(setting_ptr->value, &b_info);
+	if((ret = parse_nicks(setting_ptr->value, &b_info)) != 0)
+	{
+		_error(ret);
+		/* Do cleanup here */
+		return 0;
+	}
 	
 	for(i = 0; i < b_info.nick_count; i++)
 	{
