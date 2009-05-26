@@ -83,11 +83,14 @@ int main(void)
 		return 0;
 	}
 	
-	
-	printf("Nick: %s\n", b_info.nicks[0]);
-	printf("Channel: %s\n", b_info.channels[0].name);
-	printf("Server: %s\n", b_info.server);
-	printf("Port: %d\n", b_info.port);
+	printf("Nicks:\n");
+	for(i = 0; i < b_info.nick_count; i++)
+		printf("\t%s\n", b_info.nicks[i]);
+	printf("Channels:\n");
+	for(i = 0; i < b_info.channel_count; i++)
+		printf("\t%s\n", b_info.channels[i].name);
+	printf("Server:\n\t%s\n", b_info.server);
+	printf("Port:\n\t%d\n", b_info.port);
 	
 	
 	printf("ret: %d\n", ret);

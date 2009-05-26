@@ -121,8 +121,11 @@ int parse_channels(char *channels_setting, bot_info *b_info)
 		}
 		strcpy(b_info->channels[count].name, working_ptr);
 		
+		count++;
 		
 	}while((working_ptr = strtok(NULL, ", ")) != NULL);
+	
+	b_info->channel_count = count;
 	
 	return 0;
 }
