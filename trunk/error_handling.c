@@ -1,14 +1,14 @@
 #include "error_handling.h"
 
-int _error(int error)
+int _error(const char *function, int error)
 {
 	if(error == ERR_CHECK_ERRNO)
 	{
-		fprintf(stderr, "Fatal error occurred: (%d)%s\n", errno, strerror(errno));
+		fprintf(stderr, "FATAL: %s failed with error: (%d)%s\n", function, errno, strerror(errno));
 	}
 	else
 	{
-		fprintf(stderr, "Fatal error occurred: %d\n", errno);
+		fprintf(stderr, "FATAL: %s failed with error: %d\n", function, error);
 	}
 	return 0;
 }

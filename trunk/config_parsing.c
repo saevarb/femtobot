@@ -23,26 +23,6 @@ int parse_nicks(char *nicks_setting, bot_info *b_info)
 {
 	char *work_ptr = strtok(nicks_setting, ", ");
 	
-	/* Only one nick */
-	if(!work_ptr && strlen(nicks_setting))
-	{
-		b_info->nick_count++;
-		
-		b_info->nicks = calloc(1, sizeof(char*));
-		if(!b_info->nicks)
-		{
-			return ERR_CHECK_ERRNO;
-		}
-		b_info->nicks[0] = malloc(strlen(work_ptr) + 1);
-		if(!b_info->nicks[0])
-		{
-			return ERR_CHECK_ERRNO;
-		}
-		
-		strcpy(b_info->nicks[0], work_ptr);
-		return 0;
-	}
-	
 	do
 	{
 		b_info->nick_count++;
@@ -64,6 +44,34 @@ int parse_nicks(char *nicks_setting, bot_info *b_info)
 	return 0;	
 }
 
+/* Parse servers, comma-separated. Must be called
+ * before parse_channels, else there won't be any
+ * defined servers in bot_info.
+ * NOTE: Bot should only support a single server
+ * at 1.0. */
+int parse_servers(char *servers_setting, bot_info *b_info)
+{
+	/* This ensures that only the first server will be used
+	 * if the user passes a comma separated list of servers
+	 * in the config file. */
+	char *work_ptr = strtok(servers_setting, ", ");
+	
+	b_info->server = malloc(strlen(work_ptr) + 1);
+	
+	strcpy(b_info->server, work_ptr);
+	
+	return 0;
+}
+
+/* Parse port. Converts it to an integer with atoi 
+ * and stores it in bot_info->port */
+int parse_port(char *port_setting, bot_info *b_info)
+{
+	b_info->port = strtol(port_setting, NULL, 10);
+	
+	return 0;
+}
+
 /* Parse channels, strtok, comma-separated. 
  * every comma-separated group should be checked 
  * if it contains ':' - if it does, that should be
@@ -72,7 +80,51 @@ int parse_nicks(char *nicks_setting, bot_info *b_info)
  * to indicate that no password is needed for the channel.*/
 int parse_channels(char *channels_setting, bot_info *b_info)
 {
+	char *working_ptr = strtok(channels_setting, ", "),
+	     *temp_ptr;
+	/* For code readability */
+	int count = b_info->channel_count;
 	
+	do
+	{
+		b_info->channels = realloc(b_info->channels, (count + 1) * sizeof(channel));
+		if(!b_info->channels)
+		{
+			return ERR_CHECK_ERRNO;
+		}
+		
+		temp_ptr = strchr(working_ptr, ':');
+		if(temp_ptr)
+		{
+			/* So we can use work_ptr for the channel only */
+			*temp_ptr = 0;
+			/* Make it point to the first char in the password */
+			temp_ptr++;
+			
+			b_info->channels[count].password = malloc(strlen(temp_ptr) + 1);
+			if(!b_info->channels[count].password)
+			{
+				return ERR_CHECK_ERRNO;
+			}
+			strcpy(b_info->channels[count].password, temp_ptr);
+		}
+		else
+		{
+			/* No password */
+			b_info->channels[count].password = NULL;
+		}
+			
+		b_info->channels[count].name = malloc(strlen(working_ptr) + 1);
+		if(!b_info->channels[count].name)
+		{
+			return ERR_CHECK_ERRNO;
+		}
+		strcpy(b_info->channels[count].name, working_ptr);
+		
+		
+	}while((working_ptr = strtok(NULL, ", ")) != NULL);
+	
+	return 0;
 }
 
 /* No need to prototype, won't and shouldn't be used outside
@@ -93,7 +145,7 @@ int parse_line(char *buffer, bot_info *b_info)
 		return ERR_INVALID_LINE;
 	}
 	
-	printf("First work_ptr: %s\n", work_ptr);
+	printf("First work_ptr: %s - %d\n", work_ptr, strlen(work_ptr));
 	
 	if(get_setting(work_ptr, b_info) != NULL)
 		return ERR_ALRDY_DEFINED;
@@ -112,10 +164,14 @@ int parse_line(char *buffer, bot_info *b_info)
 	{
 		return ERR_CHECK_ERRNO;
 	}
-	strncpy(b_info->b_config[cur_config_count-1].setting, work_ptr, strlen(work_ptr));
+	strcpy(b_info->b_config[cur_config_count-1].setting, work_ptr);
 	
 	/* Make work_ptr point at the value of the setting */
 	work_ptr = strtok(NULL, "= ");
+	if(!work_ptr)
+	{
+		return ERR_INVALID_LINE;
+	}
 	printf("Second work_ptr: %s\n", work_ptr);
 	
 	b_info->b_config[cur_config_count-1].value = malloc(strlen(work_ptr) + 1);
@@ -153,7 +209,7 @@ int read_settings(const char *filename, bot_info *b_info)
 	{
 		if(one == EOL)
 		{
-			buffer[read_count] = '\0';
+			buffer[read_count] = 0;
 			/* Parse the line and put whatever config entry
 			 * that's in it into b_config */
 			if((ret = parse_line(buffer, b_info)) != 0)
