@@ -14,3 +14,4 @@
 #define ERR_COMMENT_LINE	 0x0004
 /* Could not find essential setting in config file */
 #define ERR_SETTING_MISSING  0x0005
+
