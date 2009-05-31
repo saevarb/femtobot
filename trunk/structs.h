@@ -1,6 +1,12 @@
 #ifndef __STRUCTS_H_
 #define __STRUCTS_H_
 
+/* This is used for better code readability
+ * Sugges we change this file's name to "types.h"
+ * or some such */
+
+typedef void *(*func_ptr_t)(void *);
+
 /* Unfinished */
 typedef struct _thread_data
 {
@@ -49,5 +55,24 @@ typedef struct _bot_info
 	bot_config *b_config;
 	unsigned int config_count;
 } bot_info;
+
+/* Needed to add this so we would have some way of 
+ * knowing what functions need to be removed from
+ * the event chain, when we dynamically unload
+ * a module, at the request of the user */
+typedef struct 
+{
+	func_ptr_t function;
+	char *owner_module;
+} event_handler;
+
+/* This type will make up the event-chain */
+typedef struct _event
+{
+	char *event_name;               /* Name of event */
+	event_handler *event_handlers;  /* Array of event handlers */
+	int eh_count; 					/* Num of event handlers */
+} event;
+
 
 #endif

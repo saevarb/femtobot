@@ -4,7 +4,8 @@ int main(void)
 {
 	bot_info b_info;
 	bot_config *setting_ptr;
-	int i, ret;
+	int i, ret, no_events = 0, j;
+	event *event_chain = NULL;
 	
 	/* Mandatory intialization. Failure to do this
 	 * may result in havoc later on. Especially
@@ -22,11 +23,12 @@ int main(void)
 	{
 		_error("read_settings()", ret);
 		/* Do cleanup here */
+		return 0;
 	}
 	
 	for(i = 0; i < b_info.config_count; i++)
 	{
-		printf("'%s' = '%s' len = %d\n", b_info.b_config[i].setting, b_info.b_config[i].value, strlen(b_info.b_config[i].setting));
+		printf("'%s' = '%s'\n", b_info.b_config[i].setting, b_info.b_config[i].value);
 	}
 	
 	if((setting_ptr = get_setting("NICKS", &b_info)) == NULL)
@@ -93,7 +95,18 @@ int main(void)
 	printf("Port:\n\t%d\n", b_info.port);
 	
 	
-	printf("ret: %d\n", ret);
+	no_events = load_modules(&event_chain);
+	
+	for(i = 0; i < no_events; i++)
+	{
+		Dl_info dlinfo;
+		printf("Event handlers for %s\n", event_chain[i].event_name);
+		for(j = 0; j < event_chain[i].eh_count; j++)
+		{
+			dladdr(event_chain[i].event_handlers[j].function, &dlinfo);
+			printf("\t%p <%s> from %s\n", event_chain[i].event_handlers[j].function, dlinfo.dli_sname, event_chain[i].event_handlers[j].owner_module);
+		}
+	}
 	
 	return 0;
 }

@@ -148,8 +148,6 @@ int parse_line(char *buffer, bot_info *b_info)
 		return ERR_INVALID_LINE;
 	}
 	
-	printf("First work_ptr: %s - %d\n", work_ptr, strlen(work_ptr));
-	
 	if(get_setting(work_ptr, b_info) != NULL)
 		return ERR_ALRDY_DEFINED;
 	
@@ -175,7 +173,6 @@ int parse_line(char *buffer, bot_info *b_info)
 	{
 		return ERR_INVALID_LINE;
 	}
-	printf("Second work_ptr: %s\n", work_ptr);
 	
 	b_info->b_config[cur_config_count-1].value = malloc(strlen(work_ptr) + 1);
 	if(!b_info->b_config[cur_config_count-1].value)
