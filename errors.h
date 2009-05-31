@@ -14,4 +14,6 @@
 #define ERR_COMMENT_LINE	 0x0004
 /* Could not find essential setting in config file */
 #define ERR_SETTING_MISSING  0x0005
+/* Failed to load a shared object */
+#define ERR_MOD_LOAD_FAILED  0x0006
 
