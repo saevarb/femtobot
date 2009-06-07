@@ -1,6 +1,6 @@
 
-femtobot: obj bin main.o config_parsing.o  error_handling.o module_support.o
-	gcc -ldl -ggdb3 -Wall obj/main.o obj/config_parsing.o obj/error_handling.o obj/module_support.o -o bin/femtobot
+femtobot: obj bin main.o config_parsing.o  error_handling.o module_support.o connect.o
+	gcc -ldl -ggdb3 -Wall obj/main.o obj/config_parsing.o obj/error_handling.o obj/module_support.o obj/connect.o -o bin/femtobot
 	
 obj:
 
@@ -10,6 +10,9 @@ bin:
 
 main.o: main.c main.h prototypes.h structs.h errors.h
 	gcc -ggdb3 -Wall -c main.c -o obj/main.o
+	
+connect.o: connect.c connect.h structs.h errors.h
+	gcc -ggdb3 -Wall -c connect.c -o obj/connect.o
 	
 config_parsing.o: config_parsing.c config_parsing.h structs.h errors.h
 	gcc -ggdb3 -Wall -c config_parsing.c -o obj/config_parsing.o
