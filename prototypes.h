@@ -10,6 +10,7 @@ int 		parse_nicks		(char *, 	   bot_info *);
 int 		parse_servers	(char *, 	   bot_info *);
 int 		parse_channels	(char *, 	   bot_info *);
 int 		parse_port		(char *, 	   bot_info *);
+int			irc_connect		(int *,		   bot_info *);
 
 /* Module support */
 int 		load_modules	(event **);

@@ -16,4 +16,7 @@
 #define ERR_SETTING_MISSING  0x0005
 /* Failed to load a shared object */
 #define ERR_MOD_LOAD_FAILED  0x0006
-
+/* Out of memory / allocation failed */
+#define ERR_OUT_MEMORY		 0x0007
+/* Failed to connect */
+#define ERR_CONNECTION_FAIL	 0x0008

@@ -6,6 +6,9 @@ int main(void)
 	bot_config *setting_ptr;
 	int i, ret, no_events = 0, j;
 	event *event_chain = NULL;
+	/* Temp for testing connection: */
+	int sockfd;
+	
 	
 	/* Mandatory intialization. Failure to do this
 	 * may result in havoc later on. Especially
@@ -107,6 +110,9 @@ int main(void)
 			printf("\t%p <%s> from %s\n", event_chain[i].event_handlers[j].function, dlinfo.dli_sname, event_chain[i].event_handlers[j].owner_module);
 		}
 	}
+	
+	/* connect test */
+	irc_connect(&sockfd, &b_info);
 	
 	return 0;
 }
