@@ -10,10 +10,16 @@ int 		parse_nicks		(char *, 	   bot_info *);
 int 		parse_servers	(char *, 	   bot_info *);
 int 		parse_channels	(char *, 	   bot_info *);
 int 		parse_port		(char *, 	   bot_info *);
+
+/* Network stuff */
 int			irc_connect		(int *,		   bot_info *);
 
 /* Module support */
 int 		load_modules	(event **);
 
-/* Erro handling */
+/* Error handling */
 int 		_error			(const char *, int);
+
+/* Thread stuff */
+void *reader_thread         (void *);
+void *writer_thread         (void *);

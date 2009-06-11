@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <dlfcn.h>
+#include <pthread.h>
 
 #include "prototypes.h"
 #include "structs.h"

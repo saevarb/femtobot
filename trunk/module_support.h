@@ -7,6 +7,7 @@
 #include <string.h>
 #include <dirent.h>
 #include <ctype.h>
+#define _GNU_SOURCE
 #include <dlfcn.h>
 
 
