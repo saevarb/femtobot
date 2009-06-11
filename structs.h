@@ -1,6 +1,8 @@
 #ifndef __STRUCTS_H_
 #define __STRUCTS_H_
 
+#include <pthread.h>
+
 /* This is used for better code readability
  * Sugges we change this file's name to "types.h"
  * or some such */
@@ -10,10 +12,10 @@ typedef void *(*func_ptr_t)(void *);
 /* Unfinished */
 typedef struct _thread_data
 {
-	unsigned char *write_buffer;
-	unsigned int *write_buffer_size;
-	pthread_mutex_t *write_mutex;
-	pthread_cond_t  *quit_event;
+	pthread_mutex_t *print_mutex;
+	pthread_mutex_t *quit_mutex;
+	pthread_cond_t  *quit_cond;
+	int             *should_quit;
 } thread_data;
 
 /* Info about a channel */
@@ -25,7 +27,7 @@ typedef struct _channel
 	unsigned short int joined;
 } channel;
 
-/* Contains info about a server 
+/* Contains info about a server
  * NOTE: Should not be used until
  * after 1.0, when we implement
  * multi-server support */
@@ -56,11 +58,11 @@ typedef struct _bot_info
 	unsigned int config_count;
 } bot_info;
 
-/* Needed to add this so we would have some way of 
+/* Needed to add this so we would have some way of
  * knowing what functions need to be removed from
  * the event chain, when we dynamically unload
  * a module, at the request of the user */
-typedef struct 
+typedef struct
 {
 	func_ptr_t function;
 	char *owner_module;

@@ -1,6 +1,6 @@
 
-femtobot: obj bin main.o config_parsing.o  error_handling.o module_support.o connect.o
-	gcc -ldl -ggdb3 -Wall obj/main.o obj/config_parsing.o obj/error_handling.o obj/module_support.o obj/connect.o -o bin/femtobot
+femtobot: obj bin main.o config_parsing.o  error_handling.o module_support.o connect.o reader_thread.o writer_thread.o
+	gcc -ldl -lpthread -ggdb3 -Wall obj/main.o obj/config_parsing.o obj/error_handling.o obj/module_support.o obj/connect.o obj/reader_thread.o obj/writer_thread.o -o bin/femtobot
 	
 obj:
 
@@ -22,6 +22,12 @@ error_handling.o: error_handling.c error_handling.h errors.h
 
 module_support.o: module_support.h errors.h structs.h
 	gcc -ggdb3 -Wall -c module_support.c -o obj/module_support.o
+
+reader_thread.o: reader_thread.c reader_thread.h structs.h
+	gcc -ggdb -Wall -c reader_thread.c -o obj/reader_thread.o
+
+writer_thread.o: writer_thread.c writer_thread.h structs.h
+	gcc -ggdb -Wall -c writer_thread.c -o obj/writer_thread.o
 	
 testmodules: testmodule1.c testmodule2.c
 	gcc -ggdb3 -fPIC -c -Wall testmodule1.c -o testmodule1.o
